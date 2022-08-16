@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 15, 2021 at 02:28 AM
+-- Generation Time: Apr 17, 2021 at 07:23 PM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.10
 
@@ -32,16 +32,15 @@ CREATE TABLE `buyer` (
   `Email` varchar(50) NOT NULL,
   `First_Name` varchar(50) NOT NULL,
   `Last_Name` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
-  `Agent_ID` int(11) DEFAULT NULL
+  `Password` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `buyer`
 --
 
-INSERT INTO `buyer` (`Email`, `First_Name`, `Last_Name`, `Password`, `Agent_ID`) VALUES
-('testb', 'testf', 'testl', 'buyer', NULL);
+INSERT INTO `buyer` (`Email`, `First_Name`, `Last_Name`, `Password`) VALUES
+('testb', 'testf', 'testl', 'buyer');
 
 -- --------------------------------------------------------
 
@@ -53,6 +52,14 @@ CREATE TABLE `buyer_bookmarks_property` (
   `Email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Property_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `buyer_bookmarks_property`
+--
+
+INSERT INTO `buyer_bookmarks_property` (`Email`, `Property_ID`) VALUES
+('testb', 1),
+('testb', 4);
 
 -- --------------------------------------------------------
 
@@ -91,10 +98,11 @@ CREATE TABLE `online_meeting` (
 --
 
 INSERT INTO `online_meeting` (`Meeting_ID`, `Agent_ID`, `Date`, `Time`, `B_Email`, `Message`) VALUES
-(36, 2, '2021-04-15', '12:00:00', 'testb', ''),
-(37, 1, '2021-04-28', '15:00:00', 'testb', ''),
-(39, 2, '2021-04-14', '13:00:00', 'testb', ''),
-(45, 2, '2021-04-23', '17:00:00', 'testb', '');
+(1, 2, '2021-04-17', '16:00:00', 'testb', 'i would like to book a meeting!'),
+(2, 2, '2021-04-17', '13:00:00', 'testb', 'if possible, i would love a tour of property 4!'),
+(3, 1, '2021-04-19', '16:00:00', 'testb', ''),
+(4, 2, '2021-04-22', '16:00:00', 'testb', ''),
+(5, 2, '2021-04-29', '14:00:00', 'testb', '');
 
 -- --------------------------------------------------------
 
@@ -106,6 +114,15 @@ CREATE TABLE `online_meeting_has_tour` (
   `Tour_ID` int(11) NOT NULL,
   `Meeting_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `online_meeting_has_tour`
+--
+
+INSERT INTO `online_meeting_has_tour` (`Tour_ID`, `Meeting_ID`) VALUES
+(1, 1),
+(2, 2),
+(3, 5);
 
 -- --------------------------------------------------------
 
@@ -134,8 +151,7 @@ INSERT INTO `property` (`Property_ID`, `Address`, `Neighbourhood`, `City`, `Zip_
 (1, '220 Hawkwood Boulevard NW', 'Hawkwood', 'Calgary', 'T3G3E8', 445000, 7250, 3, 3, 'tests'),
 (2, '23 Applecrest Court SE', 'Applewood Park', 'Calgary', 'T2A7N8', 349900, 4050, 2, 1, 'tests'),
 (3, '5, 1922 9 Avenue SE', 'Inglewood', 'Calgary', 'T2G0V2', 715000, 0, 0, 2, 'tests'),
-(4, '101 Woodglen Place', 'Woodglen', 'Okotoks', 'T1S1L2', 410000, 7250, 3, 3, 'tests'),
-(5, '411 Panatella Square NW', 'Panorama Hills', 'Calgary', 'T3K0T7', 739900, 7250, 4, 4, 'tests');
+(4, '101 Woodglen Place', 'Woodglen', 'Okotoks', 'T1S1L2', 410000, 7250, 3, 3, 'tests');
 
 -- --------------------------------------------------------
 
@@ -197,8 +213,7 @@ CREATE TABLE `residential_property` (
 INSERT INTO `residential_property` (`Property_ID`) VALUES
 (1),
 (2),
-(4),
-(5);
+(4);
 
 -- --------------------------------------------------------
 
@@ -210,36 +225,15 @@ CREATE TABLE `seller` (
   `Email` varchar(50) NOT NULL,
   `First_Name` varchar(50) NOT NULL,
   `Last_Name` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
-  `Agent_ID` int(11) DEFAULT NULL
+  `Password` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `seller`
 --
 
-INSERT INTO `seller` (`Email`, `First_Name`, `Last_Name`, `Password`, `Agent_ID`) VALUES
-('tests', 'testf', 'testl', 'seller', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `structure_type`
---
-
-CREATE TABLE `structure_type` (
-  `Property_ID` int(11) NOT NULL,
-  `Type` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `structure_type`
---
-
-INSERT INTO `structure_type` (`Property_ID`, `Type`) VALUES
-(1, 'House'),
-(2, 'Townhouse'),
-(3, 'House');
+INSERT INTO `seller` (`Email`, `First_Name`, `Last_Name`, `Password`) VALUES
+('tests', 'testf', 'testl', 'seller');
 
 -- --------------------------------------------------------
 
@@ -254,6 +248,15 @@ CREATE TABLE `tour` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `tour`
+--
+
+INSERT INTO `tour` (`Tour_ID`, `Property_ID`, `Agent_ID`) VALUES
+(1, 1, 2),
+(2, 4, 2),
+(3, 3, 2);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -262,8 +265,7 @@ CREATE TABLE `tour` (
 --
 ALTER TABLE `buyer`
   ADD PRIMARY KEY (`Email`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD KEY `Buyer_Agent_ID_FK` (`Agent_ID`);
+  ADD UNIQUE KEY `Email` (`Email`);
 
 --
 -- Indexes for table `buyer_bookmarks_property`
@@ -333,15 +335,7 @@ ALTER TABLE `residential_property`
 --
 ALTER TABLE `seller`
   ADD PRIMARY KEY (`Email`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD KEY `Seller_Agent_ID_FK` (`Agent_ID`);
-
---
--- Indexes for table `structure_type`
---
-ALTER TABLE `structure_type`
-  ADD PRIMARY KEY (`Property_ID`,`Type`),
-  ADD UNIQUE KEY `Listing_ID` (`Property_ID`);
+  ADD UNIQUE KEY `Email` (`Email`);
 
 --
 -- Indexes for table `tour`
@@ -360,41 +354,35 @@ ALTER TABLE `tour`
 -- AUTO_INCREMENT for table `online_meeting`
 --
 ALTER TABLE `online_meeting`
-  MODIFY `Meeting_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `Meeting_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
-  MODIFY `Property_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `Property_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `property_image`
 --
 ALTER TABLE `property_image`
-  MODIFY `Image_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `Image_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `real_estate_agent`
 --
 ALTER TABLE `real_estate_agent`
-  MODIFY `Agent_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Agent_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tour`
 --
 ALTER TABLE `tour`
-  MODIFY `Tour_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Tour_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `buyer`
---
-ALTER TABLE `buyer`
-  ADD CONSTRAINT `Buyer_Agent_ID_FK` FOREIGN KEY (`Agent_ID`) REFERENCES `real_estate_agent` (`Agent_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `buyer_bookmarks_property`
@@ -440,18 +428,6 @@ ALTER TABLE `property_image`
 --
 ALTER TABLE `residential_property`
   ADD CONSTRAINT `Residential_Property_Property_ID_FK` FOREIGN KEY (`Property_ID`) REFERENCES `property` (`Property_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
--- Constraints for table `seller`
---
-ALTER TABLE `seller`
-  ADD CONSTRAINT `Seller_Agent_ID_FK` FOREIGN KEY (`Agent_ID`) REFERENCES `real_estate_agent` (`Agent_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
--- Constraints for table `structure_type`
---
-ALTER TABLE `structure_type`
-  ADD CONSTRAINT `Structure_Type_Property_ID_FK` FOREIGN KEY (`Property_ID`) REFERENCES `property` (`Property_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `tour`
